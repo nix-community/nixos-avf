@@ -18,6 +18,9 @@ jobs:
           os: ubuntu-24.04-arm
         - id: x86_64
           os: ubuntu-latest
+        nixos:
+        - unstable
+        - 24.11
     runs-on: $[{ matrix.arch.os }}
     steps:
       - uses: actions/checkout@v3
@@ -29,10 +32,10 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           # explicitly enable sandbox
           extra_nix_config: sandbox = true
-      - run: nix-channel --add https://github.com/NixOS/nixpkgs/archive/refs/heads/master.tar.gz nixpkgs
+      - run: nix-channel --add https://github.com/NixOS/nixpkgs/archive/refs/heads/nixos-${{ matrix.nixos }}.tar.gz nixpkgs
       - run: nix-channel --update
       - run: nix-build initial.nix
       - uses: actions/upload-artifact@v4
         with:
-          name: image-${{ matrix.arch.id }}
+          name: image-${{ matrix.nixos }}-${{ matrix.arch.id }}
           path: result
