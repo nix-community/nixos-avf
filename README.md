@@ -1,4 +1,4 @@
-# android/avf/
+# nixos-avf
 
 Android Virtualization Framework is a new virtualization environment for Android
 
