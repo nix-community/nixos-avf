@@ -49,10 +49,18 @@ with lib;
   ];
 
   options = {
-    avf.vmConfig = mkOption {
-      description = "VM config for AVF";
-      default = { };
-      type = vmConfig.type;
+    avf = {
+      vmConfig = mkOption {
+        description = "VM config for AVF";
+        default = { };
+        type = vmConfig.type;
+      };
+
+      defaultUser = mkOption {
+        description = "Default user to create";
+        type = types.str;
+        default = "droid";
+      };
     };
   };
 
@@ -108,14 +116,14 @@ with lib;
         keyFile = "/etc/ttyd/server.key";
         clientOptions = [ "disableLeaveAlert=true" ];
         certFile = "/etc/ttyd/server.ct";
-        entrypoint = [ "${pkgs.shadow}/bin/login" "-f" "droid" ];
+        entrypoint = [ "${pkgs.shadow}/bin/login" "-f" "${cfg.defaultUser}" ];
         writeable = true;
       };
     */
 
     systemd.services.ttyd = {
       serviceConfig = {
-        ExecStart = "${extraPkgs.ttyd}/bin/ttyd --ssl --ssl-cert /etc/ttyd/server.crt --ssl-key /etc/ttyd/server.key --ssl-ca /mnt/internal/ca.crt -t disableLeaveAlert=true -W ${config.services.ttyd.entrypoint} -f droid";
+        ExecStart = "${extraPkgs.ttyd}/bin/ttyd --ssl --ssl-cert /etc/ttyd/server.crt --ssl-key /etc/ttyd/server.key --ssl-ca /mnt/internal/ca.crt -t disableLeaveAlert=true -W ${config.services.ttyd.entrypoint} -f ${cfg.defaultUser}";
         Type = "simple";
         Restart = "always";
         User = "root";
@@ -245,17 +253,6 @@ with lib;
 
     systemd.services.shutdown_runner = mkService "shutdown_runner";
 
-    system.activationScripts.setup_files = {
-      text = ''
-        if [ ! -e /_setup ]; then
-          cp -rv ${./etc}/* /etc/
-          mkdir -vp /mnt/{shared,internal,backup}
-          chown -v 1000:100 /mnt/{shared,internal,backup}
-          touch /_setup
-        fi
-      '';
-    };
-
     services.zram-generator = {
       enable = true;
       settings = {
@@ -269,17 +266,17 @@ with lib;
       };
     };
 
-    users.users.droid = {
+    users.users.${cfg.defaultUser} = {
       isNormalUser = true;
       extraGroups = [
-        "droid"
+        "${cfg.defaultUser}"
         "wheel"
         "video"
         "render"
       ];
       initialHashedPassword = "";
     };
-    users.groups.droid = { };
+    users.groups.${cfg.defaultUser} = { };
     security.sudo.wheelNeedsPassword = false;
 
     programs.bcc.enable = true;
