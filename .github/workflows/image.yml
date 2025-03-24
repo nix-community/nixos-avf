@@ -12,12 +12,12 @@ jobs:
   update:
     strategy:
       max-parallel: 1
-    matrix:
-      arch:
-      - id: aarch64
-        os: ubuntu-24.04-arm
-      - id: x86_64
-        os: ubuntu-latest
+      matrix:
+        arch:
+        - id: aarch64
+          os: ubuntu-24.04-arm
+        - id: x86_64
+          os: ubuntu-latest
     runs-on: $[{ matrix.arch.os }}
     steps:
       - uses: actions/checkout@v3
