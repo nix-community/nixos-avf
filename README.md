@@ -22,8 +22,22 @@ If the VM fails to start, include `./avf/debug.nix` and view the logs on a debug
 
 # Using the image
 
-You will need a debuggable android build. Place the image under /sdcard/linux/images.tar.gz
+## Debuggable android
 
-Currently Google doesn't provide a way to use custom images on production builds
+You will need a debuggable android build also known as userdebug (eng build also works)
 
-If you have a way to get it working on a production build using root, open a PR
+Place the image under /sdcard/linux/images.tar.gz or use scripts/android-download-vm.sh to download and install the current latest image.
+
+Delete existing VM configuration either via app (Settings > Recovery) or via scripts/android-clean-vm.sh
+
+Restart the terminal app. You should get a popup saying "Auto-Install" and the Terminal should automatically use your image.
+
+## Production android build
+
+### Without root
+
+(todo solution using kexec to hijack system, then overwrite partitions)
+
+### With root
+
+(todo)
