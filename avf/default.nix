@@ -263,7 +263,9 @@ with lib;
           zram-size = "ram / 4";
         };
 
-        compression-algorithm = "zstd";
+        "" = {
+          compression-algorithm = "zstd";
+        };
       };
     };
 
