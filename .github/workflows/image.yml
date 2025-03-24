@@ -1,0 +1,32 @@
+name: Build image
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - trunk
+
+jobs:
+  update:
+    strategy:
+      max-parallel: 1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: 'master'
+      - uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          # explicitly enable sandbox
+          extra_nix_config: sandbox = true
+      - run: nix-channel --add https://github.com/NixOS/nixpkgs/archive/refs/heads/master.tar.gz nixpkgs
+      - run: nix-channel --update
+      - run: nix-build initial.nix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image
+          path: result
