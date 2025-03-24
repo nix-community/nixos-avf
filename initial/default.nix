@@ -40,7 +40,7 @@ in
         mkdir -vp /etc/nixos
         cp -v ${defaultConfig} /etc/nixos/configuration.nix
 
-        HOME=/root nix-channel --add https://github.com/nix-community/nixos-avf/archive/refs/heads/trunk.tar.gz nixos-avf
+        HOME=/root ${config.nix.package}/bin/nix-channel --add https://github.com/nix-community/nixos-avf/archive/refs/heads/trunk.tar.gz nixos-avf
 
         touch /_setup
       fi
