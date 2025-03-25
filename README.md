@@ -26,7 +26,7 @@ If the VM fails to start, include `./avf/debug.nix` and view the logs on a debug
 
 You will need a debuggable android build also known as userdebug (eng build also works)
 
-Place the image under /sdcard/linux/images.tar.gz or use scripts/android-download-vm.sh to download and install the current latest image.
+Place the image under /sdcard/linux/images.tar.gz or use scripts/android-download-vm.sh to download and copy the latest image.
 
 Delete existing VM configuration either via app (Settings > Recovery) or via scripts/android-clean-vm.sh
 
