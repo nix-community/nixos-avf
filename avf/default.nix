@@ -121,7 +121,7 @@ with lib;
       };
     */
 
-    systemd.package = pkgs.systemd.overrideAttrs(a: {
+    systemd.package = pkgs.systemd.overrideAttrs (a: {
       patches = a.patches ++ [
         ./systemd-esp-type-ignore.patch
       ];
@@ -182,12 +182,13 @@ with lib;
       vm_config = vmConfig.generate "vm_config.json" cfg.vmConfig;
     };
 
-    nix.settings = {
-      trusted-substituters = [ "https://nix-community.cachix.org" ];
-      trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-    };
+    nix.settings.substituters = [
+      "https://nix-community.cachix.org"
+    ];
+
+    nix.settings.trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
 
     boot.growPartition = true;
     boot.loader.systemd-boot.enable = true;
