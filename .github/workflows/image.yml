@@ -20,7 +20,7 @@ jobs:
         nixos:
         - unstable
         - 24.11
-    runs-on: $[{ matrix.arch.os }}
+    runs-on: ${{ matrix.arch.os }}
     steps:
       - uses: actions/checkout@v3
         with:
