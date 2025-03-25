@@ -48,6 +48,6 @@ jobs:
         with:
           name: image-${{ matrix.nixos }}-${{ matrix.arch.id }}
           path: image-${{ matrix.nixos }}-${{ matrix.arch.id }}.tar.gz
-      - run: gh release upload --clobber nixos-${{ matrix.nixos }} image-${{ matrix.nixos }}-${{ matrix.arch.id }}.tar.gz
+      - run: gh release upload --clobber nixos-${{ matrix.nixos }} $(readlink -f image-${{ matrix.nixos }}-${{ matrix.arch.id }}.tar.gz)#image-${{ matrix.nixos }}-${{ matrix.arch.id }}.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
