@@ -43,8 +43,11 @@ jobs:
       - run: chmod o+rx /home/runner
 #      - run: nix-build initial.nix -A config.system.build.toplevel | cachix push nix-community
       - run: cachix watch-exec -- nix-build initial.nix -A config.system.build.toplevel
-      - run: nix-build initial.nix -A config.system.build.avfImage
+      - run: nix-build initial.nix -A config.system.build.avfImage -o image-${{ matrix.nixos }}-${{ matrix.arch.id }}.tar.gz
       - uses: actions/upload-artifact@v4
         with:
           name: image-${{ matrix.nixos }}-${{ matrix.arch.id }}
-          path: result
+          path: image-${{ matrix.nixos }}-${{ matrix.arch.id }}.tar.gz
+      - run: gh release upload --clobber nixos-${{ matrix.nixos }} image-${{ matrix.nixos }}-${{ matrix.arch.id }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
