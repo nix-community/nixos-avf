@@ -1,0 +1,31 @@
+diff --git a/src/shared/find-esp.c b/src/shared/find-esp.c
+index e0550a7a09..82e88384c8 100644
+--- a/src/shared/find-esp.c
++++ b/src/shared/find-esp.c
+@@ -120,10 +120,10 @@ static int verify_esp_blkid(
+         r = blkid_probe_lookup_value(b, "PART_ENTRY_TYPE", &v, NULL);
+         if (r != 0)
+                 return log_error_errno(errno ?: EIO, "Failed to probe partition type UUID of \"%s\": %m", node);
+-        if (sd_id128_string_equal(v, SD_GPT_ESP) <= 0)
++/*        if (sd_id128_string_equal(v, SD_GPT_ESP) <= 0)
+                 return log_full_errno(searching ? LOG_DEBUG : LOG_ERR,
+                                        SYNTHETIC_ERRNO(searching ? EADDRNOTAVAIL : ENODEV),
+-                                       "File system \"%s\" has wrong type for an EFI System Partition (ESP).", node);
++                                       "File system \"%s\" has wrong type for an EFI System Partition (ESP).", node);*/
+ 
+         errno = 0;
+         r = blkid_probe_lookup_value(b, "PART_ENTRY_UUID", &v, NULL);
+@@ -218,11 +218,11 @@ static int verify_esp_udev(
+         r = sd_device_get_property_value(d, "ID_PART_ENTRY_TYPE", &v);
+         if (r < 0)
+                 return log_device_error_errno(d, r, "Failed to get device property: %m");
+-        if (sd_id128_string_equal(v, SD_GPT_ESP) <= 0)
++/*        if (sd_id128_string_equal(v, SD_GPT_ESP) <= 0)
+                 return log_device_full_errno(d,
+                                              searching ? LOG_DEBUG : LOG_ERR,
+                                              SYNTHETIC_ERRNO(searching ? EADDRNOTAVAIL : ENODEV),
+-                                             "File system \"%s\" has wrong type for an EFI System Partition (ESP).", node);
++                                             "File system \"%s\" has wrong type for an EFI System Partition (ESP).", node);*/
+ 
+         r = sd_device_get_property_value(d, "ID_PART_ENTRY_UUID", &v);
+         if (r < 0)

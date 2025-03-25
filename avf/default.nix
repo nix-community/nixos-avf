@@ -121,6 +121,12 @@ with lib;
       };
     */
 
+    systemd.package = pkgs.systemd.overrideAttrs(a: {
+      patches = a.patches ++ [
+        ./systemd-esp-type-ignore.patch
+      ];
+    });
+
     systemd.services.ttyd = {
       serviceConfig = {
         ExecStart = "${extraPkgs.ttyd}/bin/ttyd --ssl --ssl-cert /etc/ttyd/server.crt --ssl-key /etc/ttyd/server.key --ssl-ca /mnt/internal/ca.crt -t disableLeaveAlert=true -W ${config.services.ttyd.entrypoint} -f ${cfg.defaultUser}";
