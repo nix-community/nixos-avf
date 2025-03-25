@@ -11,4 +11,4 @@
       }
     )
   ];
-}).config.system.build.avfImage
+})

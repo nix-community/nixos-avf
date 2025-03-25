@@ -16,7 +16,7 @@ Proper CI will follow
 
 # Building initial image
 
-Assuming current folder is the root of this repo, build the following initial.nix
+Assuming current folder is the root of this repo, build the following: `nix-build initial.nix -A config.system.build.toplevel`
 
 If the VM fails to start, include `./avf/debug.nix` and view the logs on a debuggable version of Android from the Terminal app (there is no better way currently)
 
