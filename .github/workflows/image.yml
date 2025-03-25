@@ -30,7 +30,9 @@ jobs:
           nix_path: nixpkgs=channel:nixos-${{ matrix.nixos }}
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           # explicitly enable sandbox
-          extra_nix_config: sandbox = true
+          extra_nix_config: |
+            sandbox = true
+            system-features = nixos-test benchmark big-parallel kvm
       - uses: cachix/cachix-action@v16
         with:
           name: nix-community
