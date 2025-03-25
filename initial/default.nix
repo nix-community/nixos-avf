@@ -41,9 +41,24 @@ in
         cp -v ${defaultConfig} /etc/nixos/configuration.nix
 
         HOME=/root ${config.nix.package}/bin/nix-channel --add https://github.com/nix-community/nixos-avf/archive/refs/heads/trunk.tar.gz nixos-avf
+        HOME=/root ${config.nix.package}/bin/nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 
         touch /_setup
       fi
     '';
   };
+
+  systemd.tmpfiles.rules =
+    let
+      channels = pkgs.runCommand "default-channels" { } ''
+        mkdir -p $out
+        ln -s ${pkgs.path} $out/nixos
+        ln -s ${./../.} $out/nixos-avf
+      '';
+    in
+    [
+      "L /nix/var/nix/profiles/per-user/root/channels-1-link - - - - ${channels}"
+      "L /nix/var/nix/profiles/per-user/root/channels - - - - channels-1-link"
+    ];
+  system.stateVersion = config.system.nixos.release;
 }

@@ -169,7 +169,7 @@ with lib;
         inherit pkgs lib config;
 
         partitionTableType = "efi";
-        copyChannel = true;
+        copyChannel = false;
         memSize = "2048";
       };
 
