@@ -14,9 +14,9 @@ jobs:
       matrix:
         arch:
         - id: aarch64
-          os: nscloud-ubuntu-22.04-arm64-8x16
+          os: nscloud-ubuntu-22.04-arm64-16x8
         - id: x86_64
-          os: nscloud-ubuntu-22.04-amd64-8x16
+          os: nscloud-ubuntu-22.04-amd64-16x8
         nixos:
         - unstable
         - 24.11
