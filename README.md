@@ -10,9 +10,9 @@ The system changes have been taken from https://android.googlesource.com/platfor
 
 # Downloading initial image
 
-An initial image is currently provided under https://mkg20001.io/tmp/terminal/latest/aarch64/images.tar.gz
+[ » Download nixos-unstable aarch64 image ](https://github.com/nix-community/nixos-avf/releases/download/nixos-unstable/image-unstable-aarch64.tar.gz)
 
-Proper CI will follow
+[ » Other architectures/releases ](https://github.com/nix-community/nixos-avf/releases)
 
 # Building initial image
 

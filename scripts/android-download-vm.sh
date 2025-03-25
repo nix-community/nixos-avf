@@ -21,9 +21,9 @@ user=$(adb -d shell am get-current-user)
 # Identify file to download
 arch=$(adb -d shell getprop ro.bionic.arch)
 if [ ${arch} == "arm64" ]; then
-  src=https://mkg20001.io/tmp/terminal/latest/aarch64/images.tar.gz
+  src=https://github.com/nix-community/nixos-avf/releases/download/nixos-unstable/image-unstable-aarch64.tar.gz
 else
-  src=https://mkg20001.io/tmp/terminal/latest/x86_64/images.tar.gz
+  src=https://github.com/nix-community/nixos-avf/releases/download/nixos-unstable/image-unstable-x86_64.tar.gz
 fi
 
 # Download
