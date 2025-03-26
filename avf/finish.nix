@@ -7,6 +7,9 @@
   e2fsprogs,
 }:
 
+let
+  RELEASE_YEAR = "2025";
+in
 stdenv.mkDerivation {
   name = "avf_image.tar.gz";
 
@@ -23,7 +26,7 @@ stdenv.mkDerivation {
 
     OFFSETS=($(sfdisk -l $diskImage -o Start,Sectors | tail -n 2 | grep -o "[0-9]*"))
 
-    echo $out > build_id
+    echo "$out ${RELEASE_YEAR}" > build_id
 
     # bs=512 -> sector size is 512, skip=start sector, count=size in sectors
     dd if=$diskImage of=efi_part bs=512 skip="''${OFFSETS[0]}" count="''${OFFSETS[1]}"
