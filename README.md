@@ -30,7 +30,7 @@ Place the image under /sdcard/linux/images.tar.gz or use scripts/android-downloa
 
 Delete existing VM configuration either via app (Settings > Recovery) or via scripts/android-clean-vm.sh
 
-Restart the terminal app. You should get a popup saying "Auto-Install" and the Terminal should automatically use your image.
+Restart the terminal app. You should get a popup saying "Auto installing" and the Terminal should automatically use your image.
 
 ## Production android build
 
