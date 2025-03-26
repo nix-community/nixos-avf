@@ -22,6 +22,10 @@ If the VM fails to start, include `./avf/debug.nix` and view the logs on a debug
 
 # Using the image
 
+NOTE: After installation of the image you want to expand the disk as you will run into space problems during rebuild otherwise.
+
+You can resize the disk under "Settings (Gear) > Disk resize". We recommend 8 GB or more.
+
 ## Debuggable android
 
 You will need a debuggable android build also known as userdebug (eng build also works)
@@ -36,8 +40,8 @@ Restart the terminal app. You should get a popup saying "Auto installing" and th
 
 ### Without root
 
-(todo solution using kexec to hijack system, then overwrite partitions)
+_todo, help needed_
 
 ### With root
 
-(todo)
+_todo, help needed_
