@@ -8,6 +8,8 @@ This profile contains the necesarry services and kernel configs to get it runnin
 
 The system changes have been taken from https://android.googlesource.com/platform/packages/modules/Virtualization/+/refs/heads/main/build/debian
 
+[ » Chat on Matrix ](https://matrix.to/#/#nixos-avf:mkg20001.io)
+
 # Downloading initial image
 
 [ » Download nixos-unstable aarch64 image ](https://github.com/nix-community/nixos-avf/releases/download/nixos-unstable/image-unstable-aarch64.tar.gz)
