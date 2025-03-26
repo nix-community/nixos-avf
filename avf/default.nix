@@ -164,6 +164,10 @@ with lib;
 
     services.avahi = {
       enable = true;
+      # Sometimes during startup, Terminal will discover only the IPv6 address
+      # and then only whitelist that one for GRPC.
+      # Remove once this is solved. See #5
+      ipv6 = false;
       publish = {
         enable = true;
         userServices = true;
