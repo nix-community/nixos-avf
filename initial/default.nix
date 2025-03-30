@@ -36,34 +36,37 @@ let
   '';
 in
 {
-  system.activationScripts.setup_files = {
-    text = ''
-      if [ ! -e /_setup ]; then
-        cp -rv ${./etc}/* /etc/
-        mkdir -vp /mnt/{shared,internal,backup}
-        chown -v 1000:100 /mnt/{shared,internal,backup}
-        mkdir -vp /etc/nixos
-        cp -v ${defaultConfig} /etc/nixos/configuration.nix
+  config = {
+    system.activationScripts.setup_files = {
+      text = ''
+        if [ ! -e /_setup ]; then
+          cp -rv ${./etc}/* /etc/
+          mkdir -vp /mnt/{shared,internal,backup}
+          chown -v 1000:100 /mnt/{shared,internal,backup}
+          mkdir -vp /etc/nixos
+          cp -v ${defaultConfig} /etc/nixos/configuration.nix
 
-        HOME=/root ${config.nix.package}/bin/nix-channel --add https://github.com/nix-community/nixos-avf/archive/refs/heads/trunk.tar.gz nixos-avf
-        HOME=/root ${config.nix.package}/bin/nix-channel --add https://nixos.org/channels/nixos-unstable nixos
+          HOME=/root ${config.nix.package}/bin/nix-channel --add https://github.com/nix-community/nixos-avf/archive/refs/heads/trunk.tar.gz nixos-avf
+          HOME=/root ${config.nix.package}/bin/nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 
-        touch /_setup
-      fi
-    '';
-  };
-
-  systemd.tmpfiles.rules =
-    let
-      channels = pkgs.runCommand "default-channels" { } ''
-        mkdir -p $out
-        ln -s ${pkgs.path} $out/nixos
-        ln -s ${./../.} $out/nixos-avf
+          touch /_setup
+        fi
       '';
-    in
-    [
-      "L /nix/var/nix/profiles/per-user/root/channels-1-link - - - - ${channels}"
-      "L /nix/var/nix/profiles/per-user/root/channels - - - - channels-1-link"
-    ];
-  system.stateVersion = config.system.nixos.release;
+    };
+
+    systemd.tmpfiles.rules =
+      let
+        channels = pkgs.runCommand "default-channels" { } ''
+          mkdir -p $out
+          ln -s ${pkgs.path} $out/nixos
+          ln -s ${./../.} $out/nixos-avf
+        '';
+      in
+      [
+        "L /nix/var/nix/profiles/per-user/root/channels-1-link - - - - ${channels}"
+        "L /nix/var/nix/profiles/per-user/root/channels - - - - channels-1-link"
+      ];
+
+    system.stateVersion = config.system.nixos.release;
+  };
 }
