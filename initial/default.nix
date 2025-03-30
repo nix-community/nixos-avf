@@ -48,15 +48,15 @@ in
 {
   options = {
     avf.initial = {
-      urlAVF = {
+      urlAVF = mkOption {
         type = types.str;
         default = envWithDefault "URL_AVF" "https://github.com/nix-community/nixos-avf/archive/refs/heads/trunk.tar.gz";
       };
-      urlOS = {
+      urlOS = mkOption {
         type = types.str;
         default = envWithDefault "URL_OS" "https://nixos.org/channels/nixos-unstable";
       };
-      archId = {
+      archId = mkOption {
         type = types.str;
         default = envWithDefault "ARCH" builtins.currentSystem;
       };
