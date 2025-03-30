@@ -23,7 +23,7 @@ export INITIAL_ARCH="$ARCH"
 export INITIAL_URL_OS="https://github.com/nix-community/nixos-avf/releases/download/nixos-$NIXOS/$F_CHANNEL"
 export INITIAL_URL_AVF="https://github.com/nix-community/nixos-avf/releases/download/nixos-$NIXOS/$F_AVF"
 
-nix-build initial.nix -A config.system.build.toplevel | cachix push nix-community
+# nix-build initial.nix -A config.system.build.toplevel | cachix push nix-community
 cachix watch-exec nix-community -- nix-build initial.nix -A config.system.build.initialRamdisk -A config.system.build.kernel
 cachix watch-exec nix-community -- nix-build initial.nix -A config.system.build.toplevel
 nix-build initial.nix -A config.system.build.avfImage -o "$F_IMAGE"
