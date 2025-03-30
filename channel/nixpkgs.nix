@@ -12,6 +12,6 @@ with (import <nixpkgs> {}); stdenv.mkDerivation {
   ];
 
   installPhase = ''
-    tar cvfJ $out -C . .
+    tar cfJ $out -C . .
   '';
 }

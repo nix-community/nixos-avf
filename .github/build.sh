@@ -13,7 +13,7 @@ nix-channel --add "https://github.com/NixOS/nixpkgs/archive/refs/heads/nixos-$NI
 nix-channel --update
 
 nix-build channel/nixpkgs.nix -o "$F_CHANNEL"
-nix-build channel/avf.nix -o "$F_CHANNEL"
+nix-build channel/avf.nix -o "$F_AVF"
 
 nix-channel --add "file://$PWD/$F_CHANNEL" nixpkgs
 nix-channel --update

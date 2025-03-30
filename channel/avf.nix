@@ -5,9 +5,9 @@ with (import <nixpkgs> {}); stdenv.mkDerivation {
   dontBuild = true;
   dontConfigure = true;
 
-  src = ${./../.};
+  src = ./../.;
 
   installPhase = ''
-    tar cfJ $out -C . .
+    tar cvfJ $out -C . .
   '';
 }
