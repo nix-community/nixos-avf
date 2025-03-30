@@ -5,6 +5,8 @@
   ...
 }:
 
+with lib;
+
 let
   envWithDefault = var: def:
     let
