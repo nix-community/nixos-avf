@@ -12,8 +12,10 @@ with (import <nixpkgs> {}); stdenv.mkDerivation {
   ];
 
   installPhase = ''
-    tar cvfJ $out -C . .
     git clean -dxf
     rm -rfv .git
+    BASE=$(basename "$PWD")
+    cd ..
+    tar cvfJ $out "$BASE"
   '';
 }
