@@ -1,0 +1,20 @@
+diff --git a/nixos/modules/system/boot/loader/systemd-boot/systemd-boot-builder.py b/nixos/modules/system/boot/loader/systemd-boot/systemd-boot-builder.py
+index 380ac69bdf7e..80098dd524f5 100644
+--- a/nixos/modules/system/boot/loader/systemd-boot/systemd-boot-builder.py
++++ b/nixos/modules/system/boot/loader/systemd-boot/systemd-boot-builder.py
+@@ -110,7 +110,6 @@ def write_loader_conf(profile: str | None, generation: int, specialisation: str
+             f.write("reboot-for-bitlocker yes\n")
+         f.write(f"console-mode {CONSOLE_MODE}\n")
+         f.flush()
+-        os.fsync(f.fileno())
+     os.rename(f"{LOADER_CONF}.tmp", LOADER_CONF)
+ 
+ 
+@@ -205,7 +204,6 @@ def write_entry(profile: str | None, generation: int, specialisation: str | None
+         if devicetree is not None:
+             f.write("devicetree %s\n" % devicetree)
+         f.flush()
+-        os.fsync(f.fileno())
+     os.rename(tmp_path, entry_file)
+ 
+ 

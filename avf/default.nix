@@ -181,6 +181,8 @@ with lib;
         partitionTableType = "efi";
         copyChannel = false;
         memSize = "2048";
+        # make sure image can be used
+        additionalSpace = "4G";
       };
 
       vm_config = vmConfig.generate "vm_config.json" cfg.vmConfig;
