@@ -7,7 +7,13 @@ with (import <nixpkgs> {}); stdenv.mkDerivation {
 
   src = ./../.;
 
+  nativeBuildInputs = [
+    git
+  ];
+
   installPhase = ''
     tar cvfJ $out -C . .
+    git clean -dxf
+    rm -rfv .git
   '';
 }

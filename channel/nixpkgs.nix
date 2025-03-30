@@ -12,6 +12,8 @@ with (import <nixpkgs> {}); stdenv.mkDerivation {
   ];
 
   installPhase = ''
-    tar cfJ $out -C . .
+    BASE=$(basename "$PWD")
+    cd ..
+    tar cfJ $out "$BASE"
   '';
 }
