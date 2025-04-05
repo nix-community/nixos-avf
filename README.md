@@ -24,9 +24,13 @@ If the VM fails to start, include `./avf/debug.nix` and view the logs on a debug
 
 # Using the image
 
-NOTE: After installation of the image you want to expand the disk as you will run into space problems during rebuild otherwise.
+> [!NOTE]
+> After installation of the image you want to expand the disk as you will run into space problems during rebuild otherwise.
+>
+> You can resize the disk under "Settings (Gear) > Disk resize". We recommend 8 GB or more.
 
-You can resize the disk under "Settings (Gear) > Disk resize". We recommend 8 GB or more.
+> [!IMPORTANT]
+> The image only works on Android 16+ and on Android flavours that have the Android 16 Terminal patches backported (example: GrapheneOS)
 
 ## Debuggable android
 
@@ -51,7 +55,7 @@ Magisk:
 ```sh
 adb shell "su -c 'rm -rfv /data/data/com.android.virtualization.terminal/{files/nixos.log,files/debian.log,files/linux,vm/nixos,vm/debian}'" # clean
 adb shell "su -c 'magisk resetprop ro.debuggable 1; stop; start;'" # enable debuggable
-adb shell "su -c 'rm /data/media/0/linux/images.tar.gz'"
+adb shell "su -c 'rm -f /data/media/0/linux/images.tar.gz'"
 adb shell "su -c 'wget https://github.com/nix-community/nixos-avf/releases/download
 /nixos-unstable/image-unstable-aarch64.tar.gz -O /data/media/0/linux/images.tar.gz'"
 ```
