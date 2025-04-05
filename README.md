@@ -46,4 +46,30 @@ _todo, help needed_
 
 ### With root
 
-_todo, help needed_
+Magisk:
+
+```sh
+adb shell "su -c 'rm -rfv /data/data/com.android.virtualization.terminal/{files/nixos.log,files/debian.log,files/linux,vm/nixos,vm/debian}'" # clean
+adb shell "su -c 'magisk resetprop ro.debuggable 1; stop; start;'" # enable debuggable
+adb shell "su -c 'rm /data/media/0/linux/images.tar.gz'"
+adb shell "su -c 'wget https://github.com/nix-community/nixos-avf/releases/download
+/nixos-unstable/image-unstable-aarch64.tar.gz -O /data/media/0/linux/images.tar.gz'"
+```
+
+Then launch the terminal app. It should auto-install.
+
+After installation is finished you can revert the changes to ro.debuggable.
+
+# Debugging/Common errors
+
+## "Connection to terminal timed out"
+
+Try restarting the app. Try re-installing the image if that doesn't help.
+
+### With root
+
+Check /data/data/com.android.virtualization.terminal/files/nixos.log
+
+If the log contains `EFI boot manager: Cannot load any image` or is missing any systemd messages like "Started xyz.service..." then the image might be corrupted
+
+Run `adb shell rm -rfv /data/data/com.android.virtualization.terminal/{files/nixos.log,files/debian.log,files/linux,vm/nixos,vm/debian}` to clear up any remnants of previous installs, then install the image again
