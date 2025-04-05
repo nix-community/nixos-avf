@@ -30,7 +30,7 @@ If the VM fails to start, include `./avf/debug.nix` and view the logs on a debug
 > You can resize the disk under "Settings (Gear) > Disk resize". We recommend 8 GB or more.
 
 > [!IMPORTANT]
-> The image only works on Android 16+ and on Android flavours that have the Android 16 Terminal patches backported (example: GrapheneOS)
+> The image only works on Android 16+ and on Android 15 flavours that have the Android 16 Terminal patches backported (example: GrapheneOS)
 
 ## Debuggable android
 
