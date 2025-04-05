@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Copyright 2024 Google Inc. All rights reserved.
 #
@@ -14,12 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+set -euo pipefail
 
-user=$(adb -d shell am get-current-user)
+SELF=$(dirname "$(readlink -f "$0")")
+. "$SELF/_common.sh"
+ADB_FLAGS="-d"
+
+require_root
+
+user=$(_adb shell am get-current-user)
 
 # Identify file to download
-arch=$(adb -d shell getprop ro.bionic.arch)
+arch=$(with_root getprop ro.bionic.arch)
 if [ ${arch} == "arm64" ]; then
   src=https://github.com/nix-community/nixos-avf/releases/download/nixos-unstable/image-unstable-aarch64.tar.gz
 else
@@ -28,9 +34,10 @@ fi
 
 # Download
 downloaded=$(mktemp)
+# NOTE: wget can run on device where available, we can implement this later
 wget ${src} -O ${downloaded}
 
 # Push the file to the device
 dst=/data/media/${user}/linux
-adb -d shell mkdir -p ${dst}
-adb -d push ${downloaded} ${dst}/images.tar.gz
+_adb shell mkdir -p ${dst}
+_adb push ${downloaded} ${dst}/images.tar.gz
