@@ -7,9 +7,7 @@ with (import <nixpkgs> {}); stdenv.mkDerivation {
 
   src = pkgs.path;
 
-  patches = [
-    ./sysb.patch
-  ];
+  patches = [ ];
 
   installPhase = ''
     BASE=$(basename "$PWD")

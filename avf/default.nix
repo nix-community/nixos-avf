@@ -237,7 +237,6 @@ with lib;
       "/boot" = {
         device = "/dev/disk/by-label/ESP";
         fsType = "vfat";
-        options = [ "sync" ];
       };
 
       "/mnt/internal" = {
