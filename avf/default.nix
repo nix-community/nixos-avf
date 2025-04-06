@@ -71,16 +71,16 @@ with lib;
         {
           partitions = [
             {
+              label = "ESP";
+              path = "$PAYLOAD_DIR/efi_part";
+              writable = true;
+              guid = "{efi_part_guid}";
+            }
+            {
               label = "nixos";
               path = "$PAYLOAD_DIR/root_part";
               writable = true;
               guid = "{root_part_guid}";
-            }
-            {
-              label = "ESP";
-              path = "$PAYLOAD_DIR/efi_part";
-              writable = false;
-              guid = "{efi_part_guid}";
             }
           ];
           writable = true;
