@@ -8,7 +8,8 @@
 with lib;
 
 let
-  envWithDefault = var: def:
+  envWithDefault =
+    var: def:
     let
       varName = "INITIAL_${var}";
     in

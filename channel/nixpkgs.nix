@@ -1,4 +1,5 @@
-with (import <nixpkgs> {}); stdenv.mkDerivation {
+with (import <nixpkgs> { });
+stdenv.mkDerivation {
   name = "avf-channel-nixpkgs.tar.xz";
 
   dontFixup = true;
