@@ -13,6 +13,10 @@ _adb() {
   _log_cmd adb ${ADB_FLAGS:-} "$@"
 }
 
+# NOTE:
+# - on android eng builds adb is always running as root
+# - on android debug builds adb can be restarted as root
+# - on rooted android production builds a su binary is available for use by adb shell
 _enable_root() {
   if $ROOT_CHECKED; then
     return

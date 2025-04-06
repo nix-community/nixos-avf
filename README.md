@@ -77,3 +77,19 @@ Check /data/data/com.android.virtualization.terminal/files/nixos.log
 If the log contains `EFI boot manager: Cannot load any image` or is missing any systemd messages like "Started xyz.service..." then the image might be corrupted
 
 Run `adb shell rm -rfv /data/data/com.android.virtualization.terminal/{files/nixos.log,files/debian.log,files/linux,vm/nixos,vm/debian}` to clear up any remnants of previous installs, then install the image again
+
+## Terminal crashes on rebuild or other memory heavy activity
+
+The VM has a 4 GB allocation of memory. This allocation does not represent the RAM the VM can actually physically use, only the maximum amount of memory it will be given from the host system under any condition.
+
+That means while the VM may think it has 4 GB of RAM available, there may not be enough physical memory available on the Phone itself.
+
+If the host memory runs full, the guest will crash.
+
+For rebuilds you can split up the rebuild into evaluation and build+switch. Just run `sudo nixos-rebuild dry-build` and only afterwards `sudo nixos-rebuild switch`. This usually works even on low-memory systems.
+
+## Switching breaks with Input/Output errors
+
+This is a known issue tracked as: https://github.com/nix-community/nixos-avf/issues/7
+
+If you are affected, please comment on the issue with your Android flavour/rom (stock, lineageos, etc), your hardware (phone manufacturer and model), your build type (debug, production) and anything else you feel like is relevant, so I can figure out why this is happening
