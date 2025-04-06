@@ -5,6 +5,7 @@
   utillinux,
   pigz,
   e2fsprogs,
+  dosfstools,
 }:
 
 let
@@ -17,6 +18,7 @@ stdenv.mkDerivation {
     utillinux
     pigz
     e2fsprogs
+    dosfstools
   ];
 
   dontUnpack = true;
@@ -34,6 +36,7 @@ stdenv.mkDerivation {
 
     # can be removed once android e2fsck supports this feature
     tune2fs -O ^orphan_file root_part
+    fsck.fat -v -a efi_part
 
     cp ${vm_config} vm_config.json
 
