@@ -18,7 +18,7 @@ The system changes have been taken from https://android.googlesource.com/platfor
 
 # Building initial image
 
-Assuming current folder is the root of this repo, build the following: `nix-build initial.nix -A config.system.build.toplevel`
+Assuming current folder is the root of this repo, build the following: `nix-build initial.nix -A config.system.build.avfImage`
 
 If the VM fails to start, include `./avf/debug.nix` and view the logs on a debuggable version of Android from the Terminal app (there is no better way currently)
 
