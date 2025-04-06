@@ -16,9 +16,11 @@ The system changes have been taken from https://android.googlesource.com/platfor
 
 [ » Other architectures/releases ](https://github.com/nix-community/nixos-avf/releases)
 
-# Building initial image (optional)
+# Building initial image (optional, for development)
 
 Assuming current folder is the root of this repo, build the following: `nix-build initial.nix -A config.system.build.avfImage`
+
+Copy the result file to `/sdcard/linux/images.tar.gz` on your phone.
 
 If the VM fails to start, include `./avf/debug.nix` and view the logs on a debuggable version of Android from the Terminal app (there is no better way currently)
 
