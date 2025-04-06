@@ -87,9 +87,3 @@ That means while the VM may think it has 4 GB of RAM available, there may not be
 If the host memory runs full, the guest will crash.
 
 For rebuilds you can split up the rebuild into evaluation and build+switch. Just run `sudo nixos-rebuild dry-build` and only afterwards `sudo nixos-rebuild switch`. This usually works even on low-memory systems.
-
-## Switching breaks with Input/Output errors
-
-This is a known issue tracked as: https://github.com/nix-community/nixos-avf/issues/7
-
-If you are affected, please comment on the issue with your Android flavour/rom (stock, lineageos, etc), your hardware (phone manufacturer and model), your build type (debug, production) and anything else you feel like is relevant, so I can figure out why this is happening
