@@ -66,8 +66,7 @@ Magisk:
 adb shell "su -c 'rm -rfv /data/data/com.android.virtualization.terminal/{files/nixos.log,files/debian.log,files/linux,vm/nixos,vm/debian}'" # clean
 adb shell "su -c 'magisk resetprop ro.debuggable 1; stop; start;'" # enable debuggable
 adb shell "su -c 'rm -f /data/media/0/linux/images.tar.gz'"
-adb shell "su -c 'wget https://github.com/nix-community/nixos-avf/releases/download
-/nixos-unstable/image-unstable-aarch64.tar.gz -O /data/media/0/linux/images.tar.gz'"
+adb shell "su -c 'wget https://github.com/nix-community/nixos-avf/releases/download/nixos-unstable/image-unstable-aarch64.tar.gz -O /data/media/0/linux/images.tar.gz'"
 ```
 
 Then launch the terminal app. It should auto-install.
