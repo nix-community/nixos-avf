@@ -204,7 +204,7 @@ with lib;
     boot.loader.systemd-boot.extraInstallCommands = ''
       # update vm_config if on live machine
       if [ -e /mnt/internal/linux ]; then
-        cp -v ${config.system.build.vmConfig} /mnt/internal/linux/vm_config.json
+        ${pkgs.coreutils}/bin/cp -v ${config.system.build.vmConfig} /mnt/internal/linux/vm_config.json
       fi
     '';
 
