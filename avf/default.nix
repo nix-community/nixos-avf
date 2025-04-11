@@ -185,8 +185,10 @@ with lib;
         additionalSpace = "4G";
       };
 
-      vm_config = vmConfig.generate "vm_config.json" cfg.vmConfig;
+      vm_config = config.system.build.vmConfig;
     };
+
+    system.build.vmConfig = vmConfig.generate "vm_config.json" cfg.vmConfig;
 
     nix.settings.substituters = [
       "https://nix-community.cachix.org"
@@ -199,6 +201,12 @@ with lib;
     boot.growPartition = true;
     boot.loader.systemd-boot.enable = true;
     boot.initrd.systemd.enable = true;
+    boot.loader.systemd-boot.extraInstallCommands = ''
+      # update vm_config if on live machine
+      if [ -e /mnt/internal/linux ]; then
+        cp -v ${config.system.build.vmConfig} /mnt/internal/linux/vm_config.json
+      fi
+    '';
 
     # image building needs to know what device to install bootloader on
     boot.loader.grub.device = "/dev/vda";
