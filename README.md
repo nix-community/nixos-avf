@@ -10,6 +10,16 @@ The system changes have been taken from https://android.googlesource.com/platfor
 
 [ » Chat on Matrix ](https://matrix.to/#/#nixos-avf:mkg20001.io)
 
+# Installation using App
+
+There is now an app that performs the installation steps for you.
+
+Note that currently the guides in the README are out of sync as I'm busy with other things.
+
+[ » App for easier installation ](https://github.com/mkg20001/nixos-avf-image-app)
+
+You can get an APK via the Matrix Chat (see above), there will be proper release soon.
+
 # Downloading initial image
 
 [ » Download nixos-unstable aarch64 image ](https://github.com/nix-community/nixos-avf/releases/download/nixos-unstable/image-unstable-aarch64.tar.gz)
