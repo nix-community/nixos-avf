@@ -201,7 +201,7 @@ with lib;
     boot.growPartition = true;
     boot.loader.systemd-boot.enable = true;
     boot.initrd.systemd.enable = true;
-    boot.loader.systemd-boot.extraInstallCommands = ''
+    /* boot.loader.systemd-boot.extraInstallCommands = ''
       # update vm_config if on live machine
       if [ -e /mnt/internal/linux ]; then
         ${pkgs.coreutils}/bin/cp -v ${config.system.build.vmConfig} /mnt/internal/linux/vm_config.json.new
@@ -209,7 +209,7 @@ with lib;
         ${pkgs.gnused}/bin/sed -i "s/{root_part_guid}/$(${pkgs.util-linux}/bin/sfdisk --part-uuid /dev/vda 2)/g" /mnt/internal/linux/vm_config.json.new
         ${pkgs.coreutils}/bin/mv /mnt/internal/linux/vm_config.json.new /mnt/internal/linux/vm_config.json
       fi
-    '';
+    ''; */
 
     # image building needs to know what device to install bootloader on
     boot.loader.grub.device = "/dev/vda";
