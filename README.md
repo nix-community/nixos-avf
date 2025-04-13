@@ -16,9 +16,9 @@ There is now an app that performs the installation steps for you.
 
 Note that currently the guides in the README are out of sync as I'm busy with other things.
 
-[ » App for easier installation ](https://github.com/mkg20001/nixos-avf-image-app)
+[ » App for easier installation ](https://github.com/mkg20001/nixos-avf-image-app/releases)
 
-You can get an APK via the Matrix Chat (see above), there will be proper release soon.
+If you have any problems, feel free to join the Matrix Chat
 
 # Downloading initial image
 
