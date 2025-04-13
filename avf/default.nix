@@ -206,10 +206,10 @@ with lib;
     boot.loader.systemd-boot.extraInstallCommands = mkIf (cfg.enableConfigReplace) ''
       # update vm_config if on live machine
       if [ -e /mnt/internal/linux ]; then
-        ${pkgs.coreutils}/bin/cp -v ${config.system.build.vmConfig} /mnt/internal/linux/vm_config.json.new
-        ${pkgs.gnused}/bin/sed -i "s/{efi_part_guid}/$(${pkgs.util-linux}/bin/sfdisk --part-uuid /dev/vda 1)/g" /mnt/internal/linux/vm_config.json.new
-        ${pkgs.gnused}/bin/sed -i "s/{root_part_guid}/$(${pkgs.util-linux}/bin/sfdisk --part-uuid /dev/vda 2)/g" /mnt/internal/linux/vm_config.json.new
-        ${pkgs.coreutils}/bin/mv /mnt/internal/linux/vm_config.json.new /mnt/internal/linux/vm_config.json
+        ${pkgs.coreutils}/bin/cp -v ${config.system.build.vmConfig} /tmp/vm_config.json.new
+        ${pkgs.gnused}/bin/sed -i "s/{efi_part_guid}/$(${pkgs.util-linux}/bin/sfdisk --part-uuid /dev/vda 1)/g" /tmp/vm_config.json.new
+        ${pkgs.gnused}/bin/sed -i "s/{root_part_guid}/$(${pkgs.util-linux}/bin/sfdisk --part-uuid /dev/vda 2)/g" /tmp/vm_config.json.new
+        ${pkgs.coreutils}/bin/mv -v /tmp/vm_config.json.new /mnt/internal/linux/vm_config.json
       fi
     '';
 
