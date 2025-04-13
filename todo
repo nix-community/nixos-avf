@@ -1,0 +1,8 @@
+rewrite main navigation to composable
+
+install: turn toasts into must-confirm dialog prompts in ui
+
+rewrite home fragment to composable
+
+build extra view that allows viewing logs, etc with root
+
