@@ -315,10 +315,10 @@ with lib;
 
     programs.bcc.enable = true;
 
-    programs.bash.promptInit = ''
+    /* programs.bash.interactiveShellInit = ''
       # Show title of current running command
       trap 'echo -ne "\e]0;\$BASH_COMMAND\007"' DEBUG
-    '';
+    ''; */
 
     systemd.network.enable = true;
     networking.useNetworkd = true;
