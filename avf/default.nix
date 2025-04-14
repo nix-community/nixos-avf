@@ -63,6 +63,7 @@ with lib;
       };
 
       enableConfigReplace = mkEnableOption "vm_config.json replace (WARNING ALPHA MAY BRICK INSTALL)";
+      useGenericKernel = mkEnableOption "use latest standard kernel";
     };
   };
 
@@ -219,9 +220,9 @@ with lib;
     boot.loader.timeout = 0;
 
     # avf patches only available for 6.1 right now
-    boot.kernelPackages = pkgs.linuxPackages_6_1;
+    boot.kernelPackages = mkIf (!cfg.useGenericKernel) pkgs.linuxPackages_6_1;
 
-    boot.kernelPatches = [
+    boot.kernelPatches = mkIf (!cfg.useGenericKernel) [
       {
         name = "avf";
         patch = "${base}/build/debian/kernel/patches/avf/arm64-balloon.patch";
