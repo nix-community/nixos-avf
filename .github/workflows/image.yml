@@ -20,6 +20,7 @@ jobs:
         nixos:
         - unstable
         - 24.11
+        - 25.05
     permissions:
       # Give the default GITHUB_TOKEN write permission to create releases
       contents: write
