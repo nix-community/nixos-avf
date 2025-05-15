@@ -62,6 +62,13 @@ with lib;
         default = "droid";
       };
 
+      extraFiles = mkOption {
+        description = "Extra files to include in the image";
+        type = types.attrsOf types.path;
+        default = {};
+        example = { "README.md" = ../README.md; };
+      };
+
       enableConfigReplace = mkEnableOption "vm_config.json replace (WARNING ALPHA MAY BRICK INSTALL)";
       useGenericKernel = mkEnableOption "use latest standard kernel";
     };
@@ -186,6 +193,7 @@ with lib;
         memSize = "2048";
         # make sure image can be used
         additionalSpace = "4G";
+        extraFiles = cfg.extraFiles;
       };
 
       vm_config = config.system.build.vmConfig;
