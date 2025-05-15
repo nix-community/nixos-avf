@@ -50,7 +50,7 @@ stdenv.mkDerivation {
     efi_part
     vm_config.json
     )
-    ${lib.concatMapAttrsStringSep '\n' (key: value: ''
+    ${lib.concatMapAttrsStringSep "\n" (key: value: ''
       cp ${lib.escapeShellArg value} ${lib.escapeShellArg key}
       contents+=(${lib.escapeShellArg key})
     '')
