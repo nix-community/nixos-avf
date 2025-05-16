@@ -9,6 +9,16 @@ on:
       - trunk
 
 jobs:
+  matrix:
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: 'trunk'
+      - uses: cachix/install-nix-action@v27
+      - run: ./.github/get-channels.sh
+        id: set-matrix
   update:
     strategy:
       matrix:
@@ -17,10 +27,7 @@ jobs:
           os: nscloud-ubuntu-22.04-arm64-8x16
         - id: x86_64
           os: nscloud-ubuntu-22.04-amd64-8x16
-        nixos:
-        - unstable
-        - 24.11
-        - 25.05
+        nixos: ${{ fromJson(needs.matrix.outputs.matrix) }}
     permissions:
       # Give the default GITHUB_TOKEN write permission to create releases
       contents: write
