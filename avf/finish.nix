@@ -7,6 +7,7 @@
   e2fsprogs,
   dosfstools,
   lib,
+  extraFiles,
 }:
 
 let
@@ -53,7 +54,7 @@ stdenv.mkDerivation {
     ${lib.concatMapAttrsStringSep "\n" (key: value: ''
       cp ${lib.escapeShellArg value} ${lib.escapeShellArg key}
       contents+=(${lib.escapeShellArg key})
-    '')}
+    '') extraFiles}
 
     # --sparse option isn't supported in apache-commons-compress
     tar cv -I pigz -f $out -C . "''${contents[@]}"
