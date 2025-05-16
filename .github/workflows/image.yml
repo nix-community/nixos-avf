@@ -18,6 +18,8 @@ jobs:
         with:
           ref: 'trunk'
       - uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
       - run: ./.github/get-channels.sh
         id: set-matrix
   update:
