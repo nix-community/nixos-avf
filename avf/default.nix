@@ -193,10 +193,10 @@ with lib;
         memSize = "2048";
         # make sure image can be used
         additionalSpace = "4G";
-        extraFiles = cfg.extraFiles;
       };
 
       vm_config = config.system.build.vmConfig;
+      extraFiles = cfg.extraFiles;
     };
 
     system.build.vmConfig = vmConfig.generate "vm_config.json" cfg.vmConfig;
