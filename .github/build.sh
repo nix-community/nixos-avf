@@ -4,6 +4,7 @@ set -euxo pipefail
 
 NIXOS="$1"
 ARCH="$2"
+TAG="nixos-$NIXOS"
 
 F_CHANNEL="nixos-channel-$NIXOS-$ARCH.tar.xz"
 F_AVF="avf-channel-$NIXOS-$ARCH.tar.xz"
@@ -27,4 +28,10 @@ cachix watch-exec nix-community -- nix-build initial.nix -A config.system.build.
 cachix watch-exec nix-community -- nix-build initial.nix -A config.system.build.toplevel
 nix-build initial.nix -A config.system.build.avfImage -o "$F_IMAGE"
 
-gh release upload --clobber "nixos-$NIXOS" "$F_IMAGE" "$F_CHANNEL" "$F_AVF"
+if ! gh release view "$TAG"; then
+  gh release create --title "Images for NixOS $NIXOS" --target empty "$TAG"
+fi
+
+gh release edit --notes-file ./.github/notes.md "$TAG"
+
+gh release upload --clobber "$TAG" "$F_IMAGE" "$F_CHANNEL" "$F_AVF"
