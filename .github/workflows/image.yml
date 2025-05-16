@@ -10,6 +10,7 @@ on:
 
 jobs:
   matrix:
+    runs-on: nscloud-ubuntu-22.04-amd64-2x2
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
