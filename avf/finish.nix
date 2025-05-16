@@ -12,6 +12,9 @@
 
 let
   RELEASE_YEAR = "2025";
+  # switch back to lib.concatMapAttrsStringSep once 24.11 is dropped
+  concatMapAttrsStringSep = sep: f: attrs:
+    lib.concatStringsSep sep (lib.mapAttrsToList f attrs);
 in
 stdenv.mkDerivation {
   name = "avf_image.tar.gz";
@@ -51,7 +54,7 @@ stdenv.mkDerivation {
     efi_part
     vm_config.json
     )
-    ${lib.concatMapAttrsStringSep "\n" (key: value: ''
+    ${concatMapAttrsStringSep "\n" (key: value: ''
       cp ${lib.escapeShellArg "${value}"} ${lib.escapeShellArg key}
       contents+=(${lib.escapeShellArg key})
     '') extraFiles}
