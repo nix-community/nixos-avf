@@ -52,7 +52,7 @@ stdenv.mkDerivation {
     vm_config.json
     )
     ${lib.concatMapAttrsStringSep "\n" (key: value: ''
-      cp ${lib.escapeShellArg value} ${lib.escapeShellArg key}
+      cp ${lib.escapeShellArg "${value}"} ${lib.escapeShellArg key}
       contents+=(${lib.escapeShellArg key})
     '') extraFiles}
 
