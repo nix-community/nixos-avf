@@ -23,6 +23,7 @@ jobs:
       - run: ./.github/get-channels.sh
         id: set-matrix
   update:
+    needs: matrix
     strategy:
       matrix:
         arch:
