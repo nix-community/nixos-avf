@@ -3,7 +3,7 @@
   lib,
   ttyd,
   rustPlatform,
-  protobuf_28,
+  protobuf_30,
   libwebsockets,
 }:
 let
@@ -26,7 +26,7 @@ let
         setSourceRoot = "sourceRoot=$(echo */guest/${name})";
 
         nativeBuildInputs = [
-          protobuf_28
+          protobuf_30
         ];
 
         postPatch = ''
