@@ -35,6 +35,8 @@ let
       "network.target"
       "mnt-internal.mount"
     ];
+
+    restartIfChanged = false;
   };
 
   vmConfig = pkgs.formats.json { };
@@ -152,6 +154,8 @@ with lib;
         "network.target"
         "mnt-internal.mount"
       ];
+
+      restartIfChanged = false;
     };
 
     systemd.services.avahi_ttyd = {
