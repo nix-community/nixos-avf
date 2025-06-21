@@ -9,8 +9,8 @@
 let
   base = pkgs.fetchgit {
     url = "https://android.googlesource.com/platform/packages/modules/Virtualization/";
-    rev = "175a51b30123fa6b02b541f1969665708f7ec2c3";
-    hash = "sha256-5Y1TbH7IYG3cGFUhVcyIwzKrPUSG54dWNC3H634xKr4=";
+    rev = "android-16.0.0_r2";
+    hash = "sha256-moIOFfn1Mfn4nTAFXFM+YfTyNi91/qQ7XDly8Qx6auA=";
   };
   extraPkgs = pkgs.callPackage ./pkgs.nix { inherit base; };
 
