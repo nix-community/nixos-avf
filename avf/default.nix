@@ -238,7 +238,7 @@ with lib;
       {
         name = "avf";
         patch = "${base}/build/debian/kernel/patches/avf/arm64-balloon.patch";
-        extraStructuredConfig = with lib.kernel; {
+        ${if lib.versionAtLeast lib.trivial.release "25.11" then "structuredExtraConfig" else "extraStructuredConfig"} = with lib.kernel; {
           # DRM = module;
           SND_VIRTIO = module;
           SND = yes;
