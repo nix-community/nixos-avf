@@ -6,6 +6,12 @@ NIXOS="$1"
 ARCH="$2"
 TAG="nixos-$NIXOS"
 
+if [ -v CACHIX_AUTH_TOKEN ]; then
+  CACHIX=(cachix watch-exec nix-community --)
+else
+  CACHIX=()
+fi
+
 F_CHANNEL="nixos-channel-$NIXOS-$ARCH.tar.xz"
 F_AVF="avf-channel-$NIXOS-$ARCH.tar.xz"
 F_IMAGE="image-$NIXOS-$ARCH.tar.gz"
@@ -24,14 +30,18 @@ export INITIAL_ARCH="$ARCH"
 export INITIAL_URL_OS="https://github.com/nix-community/nixos-avf/releases/download/nixos-$NIXOS/$F_CHANNEL"
 export INITIAL_URL_AVF="https://github.com/nix-community/nixos-avf/releases/download/nixos-$NIXOS/$F_AVF"
 
-cachix watch-exec nix-community -- nix-build initial.nix -A config.system.build.initialRamdisk -A config.system.build.kernel
-cachix watch-exec nix-community -- nix-build initial.nix -A config.system.build.toplevel
+"${CACHIX[@]}" nix-build initial.nix -A config.system.build.initialRamdisk -A config.system.build.kernel
+"${CACHIX[@]}" nix-build initial.nix -A config.system.build.toplevel
 nix-build initial.nix -A config.system.build.avfImage -o "$F_IMAGE"
 
-if ! gh release view "$TAG"; then
-  gh release create --title "Images for NixOS $NIXOS" --target empty "$TAG"
+if [ -v GITHUB_TOKEN ]; then
+  if ! gh release view "$TAG"; then
+    gh release create --title "Images for NixOS $NIXOS" --target empty "$TAG"
+  fi
+
+  gh release edit --notes-file ./.github/notes.md "$TAG"
+
+  gh release upload --clobber "$TAG" "$F_IMAGE" "$F_CHANNEL" "$F_AVF"
+else
+  echo "Skip uploading, no GITHUB_TOKEN"
 fi
-
-gh release edit --notes-file ./.github/notes.md "$TAG"
-
-gh release upload --clobber "$TAG" "$F_IMAGE" "$F_CHANNEL" "$F_AVF"
