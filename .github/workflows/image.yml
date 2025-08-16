@@ -25,6 +25,7 @@ jobs:
   update:
     needs: matrix
     strategy:
+      fail-fast: false
       matrix:
         arch:
         - id: aarch64
