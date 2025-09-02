@@ -28,6 +28,11 @@ If you have any problems, feel free to join the Matrix Chat
 
 # Building initial image (optional, for development)
 
+> [!IMPORTANT]
+> You will need an arm64 image for most phones. To build an arm64 image on a x86_64 system, run `export CROSS_SYSTEM=aarch64_linux` before running nix-build
+>
+> You will need to either [ » emulate aarch64 ](https://nixos-and-flakes.thiscute.world/development/cross-platform-compilation#compile-through-emulated-system) or add [ » a remote builder ](https://nix.dev/tutorials/nixos/distributed-builds-setup.html#set-up-distributed-builds) that supports aarch64.
+
 Assuming current folder is the root of this repo, build the following: `nix-build initial.nix -A config.system.build.avfImage`
 
 Copy the result file to `/sdcard/linux/images.tar.gz` on your phone.
