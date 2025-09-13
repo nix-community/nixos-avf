@@ -30,6 +30,7 @@ let
       StandardError = "journal";
     };
     wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
     after = [
       "network-online.target"
       "network.target"
@@ -149,6 +150,7 @@ with lib;
       };
 
       wantedBy = [ "multi-user.target" ];
+      wants = [ "network-online.target" ];
       after = [
         "network-online.target"
         "network.target"
