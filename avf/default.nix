@@ -68,8 +68,10 @@ with lib;
       extraFiles = mkOption {
         description = "Extra files to include in the image";
         type = types.attrsOf types.path;
-        default = {};
-        example = { "README.md" = ../README.md; };
+        default = { };
+        example = {
+          "README.md" = ../README.md;
+        };
       };
 
       enableConfigReplace = mkEnableOption "vm_config.json replace (WARNING ALPHA MAY BRICK INSTALL)";
@@ -335,10 +337,12 @@ with lib;
 
     programs.bcc.enable = true;
 
-    /* programs.bash.interactiveShellInit = ''
-      # Show title of current running command
-      trap 'echo -ne "\e]0;\$BASH_COMMAND\007"' DEBUG
-    ''; */
+    /*
+      programs.bash.interactiveShellInit = ''
+        # Show title of current running command
+        trap 'echo -ne "\e]0;\$BASH_COMMAND\007"' DEBUG
+      '';
+    */
 
     systemd.network.enable = true;
     networking.useNetworkd = true;

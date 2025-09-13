@@ -46,13 +46,13 @@ let
 in
 {
   ttyd =
-    (ttyd.override ({
+    (ttyd.override {
       libwebsockets = libwebsockets.overrideAttrs (_: {
         patches = [
           "${base}/build/debian/ttyd/client_cert.patch"
         ];
       });
-    })).overrideAttrs
+    }).overrideAttrs
       (a: {
         patches = [
           "${base}/build/debian/ttyd/xtermjs_a11y.patch"
