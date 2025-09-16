@@ -44,4 +44,3 @@ jobs:
       # path /home/runner should have permissions 755, but had permissions 750. Consider running 'chmod o+rx /home/runner'.
       - run: chmod o+rx /home/runner
       - run: ./.github/build.sh ${{ matrix.nixos }} ${{ matrix.arch.id }}
-

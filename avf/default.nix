@@ -30,6 +30,7 @@ let
       StandardError = "journal";
     };
     wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
     after = [
       "network-online.target"
       "network.target"
@@ -67,8 +68,10 @@ with lib;
       extraFiles = mkOption {
         description = "Extra files to include in the image";
         type = types.attrsOf types.path;
-        default = {};
-        example = { "README.md" = ../README.md; };
+        default = { };
+        example = {
+          "README.md" = ../README.md;
+        };
       };
 
       enableConfigReplace = mkEnableOption "vm_config.json replace (WARNING ALPHA MAY BRICK INSTALL)";
@@ -149,6 +152,7 @@ with lib;
       };
 
       wantedBy = [ "multi-user.target" ];
+      wants = [ "network-online.target" ];
       after = [
         "network-online.target"
         "network.target"
@@ -238,12 +242,18 @@ with lib;
       {
         name = "avf";
         patch = "${base}/build/debian/kernel/patches/avf/arm64-balloon.patch";
-        ${if lib.versionAtLeast lib.trivial.release "25.11" then "structuredExtraConfig" else "extraStructuredConfig"} = with lib.kernel; {
-          # DRM = module;
-          SND_VIRTIO = module;
-          SND = yes;
-          SOUND = yes;
-        };
+        ${
+          if lib.versionAtLeast lib.trivial.release "25.05" then
+            "structuredExtraConfig"
+          else
+            "extraStructuredConfig"
+        } =
+          with lib.kernel; {
+            # DRM = module;
+            SND_VIRTIO = module;
+            SND = yes;
+            SOUND = yes;
+          };
       }
     ];
 
@@ -327,10 +337,12 @@ with lib;
 
     programs.bcc.enable = true;
 
-    /* programs.bash.interactiveShellInit = ''
-      # Show title of current running command
-      trap 'echo -ne "\e]0;\$BASH_COMMAND\007"' DEBUG
-    ''; */
+    /*
+      programs.bash.interactiveShellInit = ''
+        # Show title of current running command
+        trap 'echo -ne "\e]0;\$BASH_COMMAND\007"' DEBUG
+      '';
+    */
 
     systemd.network.enable = true;
     networking.useNetworkd = true;

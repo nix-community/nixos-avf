@@ -12,7 +12,7 @@ index e0550a7a09..82e88384c8 100644
                                         SYNTHETIC_ERRNO(searching ? EADDRNOTAVAIL : ENODEV),
 -                                       "File system \"%s\" has wrong type for an EFI System Partition (ESP).", node);
 +                                       "File system \"%s\" has wrong type for an EFI System Partition (ESP).", node);*/
- 
+
          errno = 0;
          r = blkid_probe_lookup_value(b, "PART_ENTRY_UUID", &v, NULL);
 @@ -218,11 +218,11 @@ static int verify_esp_udev(
@@ -26,6 +26,6 @@ index e0550a7a09..82e88384c8 100644
                                               SYNTHETIC_ERRNO(searching ? EADDRNOTAVAIL : ENODEV),
 -                                             "File system \"%s\" has wrong type for an EFI System Partition (ESP).", node);
 +                                             "File system \"%s\" has wrong type for an EFI System Partition (ESP).", node);*/
- 
+
          r = sd_device_get_property_value(d, "ID_PART_ENTRY_UUID", &v);
          if (r < 0)

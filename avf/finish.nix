@@ -13,7 +13,8 @@
 let
   RELEASE_YEAR = "2025";
   # switch back to lib.concatMapAttrsStringSep once 24.11 is dropped
-  concatMapAttrsStringSep = sep: f: attrs:
+  concatMapAttrsStringSep =
+    sep: f: attrs:
     lib.concatStringsSep sep (lib.mapAttrsToList f attrs);
 in
 stdenv.mkDerivation {
