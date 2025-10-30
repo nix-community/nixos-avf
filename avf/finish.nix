@@ -2,7 +2,7 @@
   stdenv,
   raw_disk_image,
   vm_config,
-  utillinux,
+  util-linux,
   pigz,
   e2fsprogs,
   dosfstools,
@@ -21,7 +21,7 @@ stdenv.mkDerivation {
   name = "avf_image.tar.gz";
 
   nativeBuildInputs = [
-    utillinux
+    util-linux
     pigz
     e2fsprogs
     dosfstools
