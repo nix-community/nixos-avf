@@ -200,7 +200,7 @@ with lib;
         copyChannel = false;
         memSize = "2048";
         # make sure image can be used
-        additionalSpace = "4G";
+        additionalSpace = "2G";
       };
 
       vm_config = config.system.build.vmConfig;
