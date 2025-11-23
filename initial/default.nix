@@ -102,5 +102,6 @@ in
     system.stateVersion = config.system.nixos.release;
 
     avf.extraFiles."README.md" = ./README-image.md;
+    avf.extraFiles."replace.sh" = ./replace.sh;
   };
 }
