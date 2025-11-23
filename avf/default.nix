@@ -266,10 +266,11 @@ with lib;
         } =
           with lib.kernel; {
             CPU_FREQ = yes;
-            ANDROID_V_CPUFREQ_VIRT = yes;
             IKCONFIG = yes;
             IKCONFIG_PROC = yes;
-          };
+          } // (if pkgs.stdenv.targetPlatform.isAarch64 then {
+            ANDROID_V_CPUFREQ_VIRT = yes;
+          } else {});
       }
     ];
 
