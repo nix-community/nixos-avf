@@ -240,7 +240,7 @@ with lib;
 
     boot.kernelPatches = mkIf (!cfg.useGenericKernel) [
       {
-        name = "avf";
+        name = "avf-ballon";
         patch = "${base}/build/debian/kernel/patches/avf/arm64-balloon.patch";
         ${
           if lib.versionAtLeast lib.trivial.release "25.05" then
@@ -253,6 +253,22 @@ with lib;
             SND_VIRTIO = module;
             SND = yes;
             SOUND = yes;
+          };
+      }
+      {
+        name = "avf-cpufreq";
+        patch = "${base}/build/debian/kernel/patches/avf/virtual-cpufreq.patch";
+        ${
+          if lib.versionAtLeast lib.trivial.release "25.05" then
+            "structuredExtraConfig"
+          else
+            "extraStructuredConfig"
+        } =
+          with lib.kernel; {
+            CPU_FREQ = yes;
+            ANDROID_V_CPUFREQ_VIRT = yes;
+            IKCONFIG = yes;
+            IKCONFIG_PROC = yes;
           };
       }
     ];
