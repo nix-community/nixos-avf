@@ -6,9 +6,10 @@
   };
 
   outputs =
-    { nixpkgs, ... }:
+    { self, nixpkgs, ... }:
     let
-      forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
+      inherit (nixpkgs) lib;
+      forAllSystems = lib.genAttrs lib.systems.flakeExposed;
     in
     {
       nixosModules = {
@@ -16,6 +17,19 @@
         avfDebug = import ./avf/debug.nix;
         avfInitial = import ./initial;
       };
+
+      packages = forAllSystems (system: let
+        nixos = lib.nixosSystem {
+          inherit system;
+          modules = with self.nixosModules; [
+            avf
+            avfInitial
+            avfDebug
+          ];
+        };
+      in {
+        initialImage = nixos.config.system.build.avfImage;
+      });
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
     };
