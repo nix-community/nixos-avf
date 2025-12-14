@@ -76,6 +76,7 @@ with lib;
 
       enableConfigReplace = mkEnableOption "vm_config.json replace (WARNING ALPHA MAY BRICK INSTALL)";
       useGenericKernel = mkEnableOption "use latest standard kernel";
+      enableGraphics = mkEnableOption "graphics support (Weston + gfxstream)";
     };
   };
 
@@ -249,7 +250,6 @@ with lib;
             "extraStructuredConfig"
         } =
           with lib.kernel; {
-            # DRM = module;
             SND_VIRTIO = module;
             SND = yes;
             SOUND = yes;
@@ -279,7 +279,7 @@ with lib;
       "console=${serialDevice}"
     ];
 
-    boot.kernelModules = [ "vhost_vsock" ];
+    boot.kernelModules = [ "vhost_vsock" ] ++ lib.optionals cfg.enableGraphics [ "virtio_gpu" ];
 
     fileSystems = {
       "/" = {
@@ -344,9 +344,7 @@ with lib;
       extraGroups = [
         "${cfg.defaultUser}"
         "wheel"
-        "video"
-        "render"
-      ];
+      ] ++ lib.optionals cfg.enableGraphics [ "video" "render" "seat" ];
       initialHashedPassword = "";
     };
     users.groups.${cfg.defaultUser} = { };
@@ -360,6 +358,74 @@ with lib;
         trap 'echo -ne "\e]0;\$BASH_COMMAND\007"' DEBUG
       '';
     */
+
+    environment.systemPackages = mkIf cfg.enableGraphics (with pkgs; [
+      mesa
+      weston
+      libdrm
+    ]);
+
+    # Enable hardware acceleration
+    hardware.graphics.enable = mkIf cfg.enableGraphics true;
+
+    # Enable seatd for seat management (required for DRM access in user services)
+    services.seatd.enable = mkIf cfg.enableGraphics true;
+
+    environment.variables = mkIf cfg.enableGraphics {
+      VK_ICD_FILENAMES = "${pkgs.mesa}/share/vulkan/icd.d/gfxstream_vk_icd.${pkgs.stdenv.hostPlatform.uname.processor}.json";
+      MESA_LOADER_DRIVER_OVERRIDE = "zink";
+      MESA_VK_WSI_DEBUG = "sw,linear";
+      WAYLAND_DISPLAY = "wayland-0";
+    };
+
+    systemd.user.services.weston = mkIf cfg.enableGraphics {
+      description = "Weston Wayland compositor";
+
+      requires = [ "weston.socket" ];
+      after = [ "weston.socket" ];
+      wantedBy = [ "default.target" ];
+
+      serviceConfig = {
+        Type = "notify";
+        ExecStart = "${pkgs.weston}/bin/weston --backend=drm --modules=systemd-notify.so --xwayland --shell=kiosk-shell.so --continue-without-input";
+        StandardOutput = "journal";
+        StandardError = "journal";
+        Restart = "on-failure";
+      };
+
+      environment = {
+        LIBGL_DRIVERS_PATH = "${pkgs.mesa.drivers}/lib/dri";
+        LD_LIBRARY_PATH = "/run/opengl-driver/lib";
+      };
+    };
+
+    systemd.user.sockets.weston = mkIf cfg.enableGraphics {
+      description = "Weston Wayland compositor socket";
+
+      socketConfig = {
+        ListenStream = "%t/wayland-0";
+      };
+
+      wantedBy = [ "sockets.target" ];
+    };
+
+    environment.etc."profile.d/enable_display.sh" = mkIf cfg.enableGraphics {
+      text = ''
+        enable_display() {
+          if [ -z "$WAYLAND_DISPLAY" ]; then
+            export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+            mkdir -p "$XDG_RUNTIME_DIR"
+            systemctl --user start weston.socket
+            systemctl --user start weston.service
+            export WAYLAND_DISPLAY=wayland-0
+            export DISPLAY=:0
+            echo "Weston display enabled. WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
+          else
+            echo "Display already active: $WAYLAND_DISPLAY"
+          fi
+        }
+      '';
+    };
 
     systemd.network.enable = true;
     networking.useNetworkd = true;
