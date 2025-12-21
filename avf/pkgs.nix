@@ -47,11 +47,14 @@ in
 {
   ttyd =
     (ttyd.override {
-      libwebsockets = libwebsockets.overrideAttrs (_: {
-        patches = [
-          "${base}/build/debian/ttyd/client_cert.patch"
-        ];
-      });
+      libwebsockets = libwebsockets.overrideAttrs (
+        a:
+        lib.optionalAttrs (lib.strings.versionOlder a.version "4.3.6") {
+          patches = [
+            "${base}/build/debian/ttyd/client_cert.patch"
+          ];
+        }
+      );
     }).overrideAttrs
       (a: {
         patches = [
