@@ -82,7 +82,8 @@ with lib;
 
   config = {
     avf.vmConfig = {
-      name = "nixos";
+      # VM name must be "debian" for display output to work
+      name = "debian";
       disks = [
         {
           partitions = [
