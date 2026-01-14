@@ -55,7 +55,7 @@ If you don't have Developer Options enabled [ » read how to do it here ](https:
 > You can resize the disk under "Settings (Gear) > Disk resize". We recommend 8 GB or more.
 
 > [!IMPORTANT]
-> The image only works on Android 16+ ([ » Beta Program ](https://www.google.com/android/beta)) and on Android 15 flavours that have the Android 16 Terminal patches backported (example: GrapheneOS)
+> The image only works on Android 16+. Additionally this has only been tested on Pixels, this may not work with other virtualization Engines from different vendors.
 
 ## Debuggable android
 
@@ -71,7 +71,7 @@ Restart the terminal app. You should get a popup saying "Auto installing" and th
 
 ### Without root
 
-_todo, help needed_
+[ » App ](https://github.com/nix-community/nixos-avf-image-app)
 
 ### With root
 
