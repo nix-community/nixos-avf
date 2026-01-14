@@ -3,6 +3,9 @@
 set -euxo pipefail
 
 IMG_LOC=/mnt/shared/image
+if [ -e "/mnt/shared/Download/image" ]; then
+  IMG_LOC=/mnt/shared/Download/image
+fi
 VM_LOC=/mnt/internal/linux
 
 STEP_MARKER=step_2

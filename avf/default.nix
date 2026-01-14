@@ -9,8 +9,8 @@
 let
   base = pkgs.fetchgit {
     url = "https://android.googlesource.com/platform/packages/modules/Virtualization/";
-    rev = "android-16.0.0_r2";
-    hash = "sha256-moIOFfn1Mfn4nTAFXFM+YfTyNi91/qQ7XDly8Qx6auA=";
+    rev = "android-16.0.0_r3";
+    hash = "sha256-boWayfOI88ejnXZ5yQzYdSuMANJLB5/Wd30ZWtsXuHw=";
   };
   extraPkgs = pkgs.callPackage ./pkgs.nix { inherit base; };
 
@@ -240,7 +240,7 @@ with lib;
 
     boot.kernelPatches = mkIf (!cfg.useGenericKernel) [
       {
-        name = "avf";
+        name = "avf-ballon";
         patch = "${base}/build/debian/kernel/patches/avf/arm64-balloon.patch";
         ${
           if lib.versionAtLeast lib.trivial.release "25.05" then
@@ -254,6 +254,23 @@ with lib;
             SND = yes;
             SOUND = yes;
           };
+      }
+      {
+        name = "avf-cpufreq";
+        patch = "${base}/build/debian/kernel/patches/avf/virtual-cpufreq.patch";
+        ${
+          if lib.versionAtLeast lib.trivial.release "25.05" then
+            "structuredExtraConfig"
+          else
+            "extraStructuredConfig"
+        } =
+          with lib.kernel; {
+            CPU_FREQ = yes;
+            IKCONFIG = yes;
+            IKCONFIG_PROC = yes;
+          } // (if pkgs.stdenv.targetPlatform.isAarch64 then {
+            ANDROID_V_CPUFREQ_VIRT = yes;
+          } else {});
       }
     ];
 
