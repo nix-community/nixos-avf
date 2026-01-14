@@ -72,6 +72,11 @@ in
           ];
         };
     shutdown_runner = mkRustPkg "shutdown_runner" ./shutdown_runner_Cargo.lock { };
-    storage_balloon_agent = mkRustPkg "storage_balloon_agent" ./storage_balloon_agent_Cargo.lock { };
+    storage_balloon_agent = mkRustPkg "storage_balloon_agent" ./storage_balloon_agent_Cargo.lock
+        {
+          patches = [
+            ./fix-reserved_clusters-storage_balloon_agent.patch
+          ];
+        };
   };
 }

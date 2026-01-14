@@ -1,0 +1,13 @@
+diff --git a/src/main.rs b/src/main.rs
+index 817b337de..2f8fbb2ec 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -78,7 +78,7 @@ fn calculate_clusters_count(guest_available_bytes: u64) -> Result<u64> {
+ }
+ 
+ fn set_reserved_clusters(clusters_count: u64) -> anyhow::Result<()> {
+-    const ROOTFS_DEVICE_NAME: &str = "vda1";
++    const ROOTFS_DEVICE_NAME: &str = "vda2";
+     std::fs::write(
+         format!("/sys/fs/ext4/{ROOTFS_DEVICE_NAME}/reserved_clusters"),
+         clusters_count.to_string(),
