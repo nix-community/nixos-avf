@@ -56,15 +56,19 @@ step_1() {
 # This replaces uefi, etc
 step_2() {
   echo "deploy step 2"
+  VDA_ROOT=/dev/vda3
+  if [ ! -e "$VDA_ROOT" ]; then
+    VDA_ROOT=/dev/vda2
+  fi
 
-  sudo chmod 777 /dev/vda3
+  sudo chmod 777 "$VDA_ROOT"
   size=$(du "$IMG_LOC/root_part" | grep -o "[0-9]*")
   iters=$(( size / ( 1024 * 250 ) ))
   for i in $(seq 0 $iters); do
-    dd "if=$IMG_LOC/root_part" "of=/dev/vda3" bs=250M count=1 "seek=$i" "skip=$i"
+    dd "if=$IMG_LOC/root_part" "of=$VDA_ROOT" bs=250M count=1 "seek=$i" "skip=$i"
     sync
   done
-  # dd "if=$IMG_LOC/root_part" "of=/dev/vda3" bs=250M oflag=sync
+  # dd "if=$IMG_LOC/root_part" "of=$VDA_ROOT" bs=250M oflag=sync
 
   cp "$IMG_LOC/efi_part" .
   sudo umount /boot/efi || true
