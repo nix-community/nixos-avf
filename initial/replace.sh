@@ -7,12 +7,29 @@ if [ -e "/mnt/shared/Download/image" ]; then
   IMG_LOC=/mnt/shared/Download/image
 fi
 VM_LOC=/mnt/internal/linux
+LOGFILE=/mnt/shared/nixos-avf.log
+
+: >> "$LOGFILE"
+
+if command -v perl >/dev/null; then
+  exec \
+    1> >(tee >(perl '-MPOSIX' -ne '$|++; print strftime("%m.%d.%Y %H:%M:%S %z: ", localtime()), "stdout: ", $_;' >> "$LOGFILE")) \
+    2> >(tee >(perl '-MPOSIX' -ne '$|++; print strftime("%m.%d.%Y %H:%M:%S %z: ", localtime()), "stderr: ", $_;' >> "$LOGFILE") >&2)
+else
+  exec \
+    1> >(tee >(awk '{ system(""); print strftime("%m.%d.%Y %H:%M:%S %z:"), "stdout:", $0; system(""); }' >> "$LOGFILE")) \
+    2> >(tee >(awk '{ system(""); print strftime("%m.%d.%Y %H:%M:%S %z:"), "stderr:", $0; system(""); }' >> "$LOGFILE") >&2)
+fi
+
+echo "deploy running, VM_LOC=$VM_LOC, IMG_LOC=$IMG_LOC"
 
 STEP_MARKER=step_2
 SELF=$(readlink -f $0)
 
 # Only adds vda3
 step_1() {
+  echo "deploy step 1"
+
   BEFORE=$(echo -e '],\n            "writable": true')
   # variables are from crosvm not bash
   # shellcheck disable=SC2016
@@ -38,6 +55,8 @@ step_1() {
 
 # This replaces uefi, etc
 step_2() {
+  echo "deploy step 2"
+
   sudo chmod 777 /dev/vda3
   size=$(du "$IMG_LOC/root_part" | grep -o "[0-9]*")
   iters=$(( size / ( 1024 * 250 ) ))
