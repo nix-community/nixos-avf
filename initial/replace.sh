@@ -47,6 +47,7 @@ step_1() {
   echo "$VM_REPLACED" | sudo tee "$VM_LOC/vm_config.json"
 
   echo "flock -w 1 /tmp/install-lock bash $SELF" >> "$HOME/.bashrc"
+  echo "tail -f $LOGFILE" >> "$HOME/.bashrc"
 
   touch "$STEP_MARKER"
 
