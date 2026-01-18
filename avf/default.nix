@@ -377,6 +377,7 @@ with lib;
       MESA_LOADER_DRIVER_OVERRIDE = "zink";
       MESA_VK_WSI_DEBUG = "sw,linear";
       WAYLAND_DISPLAY = "wayland-0";
+      DISPLAY = ":0";
     };
 
     systemd.user.services.weston = mkIf cfg.enableGraphics {
@@ -408,24 +409,6 @@ with lib;
       };
 
       wantedBy = [ "sockets.target" ];
-    };
-
-    environment.etc."profile.d/enable_display.sh" = mkIf cfg.enableGraphics {
-      text = ''
-        enable_display() {
-          if [ -z "$WAYLAND_DISPLAY" ]; then
-            export XDG_RUNTIME_DIR="/run/user/$(id -u)"
-            mkdir -p "$XDG_RUNTIME_DIR"
-            systemctl --user start weston.socket
-            systemctl --user start weston.service
-            export WAYLAND_DISPLAY=wayland-0
-            export DISPLAY=:0
-            echo "Weston display enabled. WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
-          else
-            echo "Display already active: $WAYLAND_DISPLAY"
-          fi
-        }
-      '';
     };
 
     systemd.network.enable = true;
