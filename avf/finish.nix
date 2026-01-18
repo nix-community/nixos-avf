@@ -34,7 +34,7 @@ stdenv.mkDerivation {
 
     OFFSETS=($(sfdisk -l $diskImage -o Start,Sectors | tail -n 2 | grep -o "[0-9]*"))
 
-    echo "$out ${RELEASE_YEAR}" > build_id
+    echo "nixos_avf/${lib.replaceStrings [ "-" ] [ "_" ] stdenv.targetPlatform.system}-''${out//-/_}-$(date)" > build_id
 
     # bs=512 -> sector size is 512, skip=start sector, count=size in sectors
     dd if=$diskImage of=efi_part bs=512 skip="''${OFFSETS[0]}" count="''${OFFSETS[1]}"
