@@ -76,7 +76,7 @@ with lib;
 
       enableConfigReplace = mkEnableOption "vm_config.json replace (WARNING ALPHA MAY BRICK INSTALL)";
       useGenericKernel = mkEnableOption "use latest standard kernel";
-      enableGraphics = mkEnableOption "graphics support (Weston + gfxstream)";
+      enableGraphics = mkEnableOption "graphics support (Weston + gfxstream)" // { default = true; };
     };
   };
 
