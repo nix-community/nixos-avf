@@ -2,6 +2,12 @@
 
 set -euxo pipefail
 
+if [ -e /sdcard ]; then
+  echo "DO NOT RUN THIS SCRIPT DIRECTLY ON ANDROID"
+  echo "IT IS ONLY INTENDED TO BE RAN IN THE AVF VM"
+  exit 2
+fi
+
 IMG_LOC=/mnt/shared/image
 if [ -e "/mnt/shared/Download/image" ]; then
   IMG_LOC=/mnt/shared/Download/image
