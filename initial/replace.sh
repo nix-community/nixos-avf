@@ -62,6 +62,11 @@ step_2() {
     VDA_ROOT=/dev/vda2
   fi
 
+  echo "=== debug ==="
+  lsblk
+  cat "$VM_LOC/vm_config.json"
+  echo "=/= debug =/="
+
   sudo chmod 777 "$VDA_ROOT"
   size=$(du "$IMG_LOC/root_part" | grep -o "[0-9]*")
   iters=$(( size / ( 1024 * 250 ) ))
