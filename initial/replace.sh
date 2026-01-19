@@ -23,7 +23,7 @@ fi
 
 echo "deploy running, VM_LOC=$VM_LOC, IMG_LOC=$IMG_LOC"
 
-STEP_MARKER=step_2
+STEP_MARKER="$HOME/step_2"
 SELF=$(readlink -f $0)
 
 # Only adds vda3
