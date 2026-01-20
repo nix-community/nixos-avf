@@ -70,7 +70,7 @@ step_2() {
 
   echo "=== debug ==="
   lsblk
-  cat "$VM_LOC/vm_config.json"
+  sudo cat "$VM_LOC/vm_config.json"
   echo "=/= debug =/="
 
   sudo chmod 777 "$VDA_ROOT"
