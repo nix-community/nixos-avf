@@ -50,6 +50,8 @@ If you don't have Developer Options enabled [ » read how to do it here ](https:
 # Using the image
 
 > [!NOTE]
+> This only applies to systems before Android 16 QPR2. Newer versions of the Terminal app resize on-demand.
+> 
 > After installation of the image you want to expand the disk as you will run into space problems during rebuild otherwise.
 >
 > You can resize the disk under "Settings (Gear) > Disk resize". We recommend 8 GB or more.
