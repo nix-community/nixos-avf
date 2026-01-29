@@ -98,7 +98,15 @@ Try restarting the app. Try re-installing the image if that doesn't help.
 
 ### With root
 
-Check /data/data/com.android.virtualization.terminal/files/nixos.log
+Check /data/data/com.android.virtualization.terminal/files/nixos.log. You can pull it with:
+
+```sh
+adb shell "su -c '
+  cp /data/data/com.android.virtualization.terminal/files/nixos.log /data/local/tmp/nixos.log
+  chown shell.shell /data/local/tmp/nixos.log
+'"
+adb pull /data/local/tmp/nixos.log
+```
 
 If the log contains `EFI boot manager: Cannot load any image` or is missing any systemd messages like "Started xyz.service..." then the image might be corrupted
 
