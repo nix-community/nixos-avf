@@ -228,7 +228,9 @@ with lib;
         ${pkgs.coreutils}/bin/cp -v ${config.system.build.vmConfig} /tmp/vm_config.json.new
         ${pkgs.gnused}/bin/sed -i "s/{efi_part_guid}/$(${pkgs.util-linux}/bin/sfdisk --part-uuid /dev/vda 1)/g" /tmp/vm_config.json.new
         ${pkgs.gnused}/bin/sed -i "s/{root_part_guid}/$(${pkgs.util-linux}/bin/sfdisk --part-uuid /dev/vda 2)/g" /tmp/vm_config.json.new
-        ${pkgs.coreutils}/bin/mv -v /tmp/vm_config.json.new /mnt/internal/linux/vm_config.json
+        # NOTE: do not remove and recreate file (AVF doesn't allow the latter),
+        # but truncate the existing one and update it with the new contents.
+        ${pkgs.coreutils}/bin/cat /tmp/vm_config.json.new > /mnt/internal/linux/vm_config.json
       fi
     '';
 
