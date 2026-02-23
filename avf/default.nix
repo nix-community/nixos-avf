@@ -14,6 +14,8 @@ let
   };
   extraPkgs = pkgs.callPackage ./pkgs.nix { inherit base; };
 
+  mesaDrivers = if builtins.elem "drivers" pkgs.mesa.outputs then pkgs.mesa.drivers else pkgs.mesa;
+
   serialDevice = "ttyS0";
 
   mkService = name: {
@@ -396,7 +398,7 @@ with lib;
       };
 
       environment = {
-        LIBGL_DRIVERS_PATH = "${pkgs.mesa.drivers}/lib/dri";
+        LIBGL_DRIVERS_PATH = "${mesaDrivers}/lib/dri";
         LD_LIBRARY_PATH = "/run/opengl-driver/lib";
       };
     };
