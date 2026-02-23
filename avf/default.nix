@@ -414,7 +414,11 @@ with lib;
     systemd.network.enable = true;
     networking.useNetworkd = true;
     networking.dhcpcd.enable = false;
-    services.resolved.dnssec = "false";
+    services.resolved =
+      if builtins.hasAttr "settings" config.services.resolved then
+        { settings.Resolve.DNSSEC = false; }
+      else
+        { dnssec = "false"; };
     networking.useDHCP = true;
     networking.firewall.enable = true; # default
     networking.nftables.enable = true;
