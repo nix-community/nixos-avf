@@ -11,6 +11,8 @@ fi
 IMG_LOC=/mnt/shared/image
 if [ -e "/mnt/shared/Download/image" ]; then
   IMG_LOC=/mnt/shared/Download/image
+elif [ -e "/mnt/shared/Download/root_part" ] || [ -e "/mnt/shared/Download/root_part.zst" ]; then
+  IMG_LOC=/mnt/shared/Download
 fi
 VM_LOC=/mnt/internal/linux
 LOGFILE=/mnt/shared/nixos-avf.log
@@ -113,7 +115,60 @@ step_2() {
   sudo reboot
 }
 
-if [ ! -e "$STEP_MARKER" ]; then
+# Android 17+ does not expose /mnt/internal/linux/vm_config.json and boots /dev/vda1 directly
+install_android17() {
+  echo "deploy android 17 in-place root_part replacement"
+
+  # Expand tmpfs to ensure compressed image and staging binaries fit in RAM
+  sudo mount -o remount,size=3G /dev/shm
+
+  if [ -f "$IMG_LOC/root_part.zst" ]; then
+    cp "$IMG_LOC/root_part.zst" /dev/shm/clean_root_part.zst
+  elif [ -f "$IMG_LOC/root_part" ]; then
+    zstd -1 -T0 "$IMG_LOC/root_part" -o /dev/shm/clean_root_part.zst
+  elif [ -f "$IMG_LOC/root_part.gz" ]; then
+    gzip -dc "$IMG_LOC/root_part.gz" | zstd -1 -T0 - -o /dev/shm/clean_root_part.zst
+  else
+    echo "Error: root_part image not found in $IMG_LOC"
+    exit 1
+  fi
+
+  rm -rf "$IMG_LOC"
+
+  sudo mkdir -p /dev/shm/bin /dev/shm/lib
+  for bin in /bin/bash /usr/bin/bash /usr/bin/zstd /bin/dd /usr/bin/dd /bin/sync /usr/bin/sync /sbin/debugfs /usr/sbin/debugfs; do
+    if [ -x "$bin" ]; then
+      sudo cp -Lf "$bin" /dev/shm/bin/
+    fi
+  done
+
+  LD_SO=$(ls /lib/ld-linux-*.so* /lib64/ld-linux-*.so* /lib/aarch64-linux-gnu/ld-linux-*.so* /lib/x86_64-linux-gnu/ld-linux-*.so* 2>/dev/null | head -n 1)
+  LD_SO_NAME=$(basename "$LD_SO")
+  sudo cp -Lf "$LD_SO" /dev/shm/lib/
+  sudo cp -Lf "$LD_SO" "/dev/shm/lib/$LD_SO_NAME"
+
+  for b in /dev/shm/bin/*; do
+    ldd "$b" | awk '/=> \// {print $3}' | xargs -r -I{} sudo cp -Lf "{}" /dev/shm/lib/
+  done
+
+  echo 1 | sudo tee /proc/sys/kernel/sysrq
+  sudo "/dev/shm/lib/$LD_SO_NAME" --library-path /dev/shm/lib /dev/shm/bin/bash -c "
+    \"/dev/shm/lib/$LD_SO_NAME\" --library-path /dev/shm/lib /dev/shm/bin/zstd -dc /dev/shm/clean_root_part.zst | \
+    \"/dev/shm/lib/$LD_SO_NAME\" --library-path /dev/shm/lib /dev/shm/bin/dd of=/dev/vda1 bs=4M conv=fsync status=progress && \
+    \"/dev/shm/lib/$LD_SO_NAME\" --library-path /dev/shm/lib /dev/shm/bin/sync && \
+    if [ -x /dev/shm/bin/debugfs ]; then
+      \"/dev/shm/lib/$LD_SO_NAME\" --library-path /dev/shm/lib /dev/shm/bin/debugfs -w -R 'ssv state 1' /dev/vda1 || true
+      \"/dev/shm/lib/$LD_SO_NAME\" --library-path /dev/shm/lib /dev/shm/bin/debugfs -w -R 'ssv error_count 0' /dev/vda1 || true
+      \"/dev/shm/lib/$LD_SO_NAME\" --library-path /dev/shm/lib /dev/shm/bin/debugfs -w -R 'ssv feature_compat 0' /dev/vda1 2>/dev/null || true
+      \"/dev/shm/lib/$LD_SO_NAME\" --library-path /dev/shm/lib /dev/shm/bin/sync
+    fi && \
+    echo b > /proc/sysrq-trigger
+  "
+}
+
+if ! sudo test -e "$VM_LOC/vm_config.json"; then
+  install_android17
+elif [ ! -e "$STEP_MARKER" ]; then
   step_1
 else
   step_2
